@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const users = readUsers()
+    const users = await readUsers()
     const user = users.find(u => u.email === email)
 
     if (!user) {

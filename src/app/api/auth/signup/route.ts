@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const users = readUsers()
+    const users = await readUsers()
 
     // Check if user already exists
     const existingUser = users.find(user => user.email === email)
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
     }
 
     users.push(newUser)
-    writeUsers(users)
+    await writeUsers(users)
 
     return NextResponse.json(
       { message: 'User created successfully', userId: newUser.id },

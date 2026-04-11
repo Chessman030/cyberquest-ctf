@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
     const { userId, answers, totalTime, tabSwitches, submittedAt, startedAt } = await request.json()
 
     // Get user details
-    const users = readUsers()
+    const users = await readUsers()
     const userIndex = users.findIndex(u => u.id === userId)
     
     if (userIndex === -1) {
@@ -37,13 +37,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Save submission
-    const submissions = readSubmissions()
+    const submissions = await readSubmissions()
     submissions.push(submission)
-    writeSubmissions(submissions)
+    await writeSubmissions(submissions)
 
     // Mark user as having attempted
     users[userIndex].hasAttempted = true
-    writeUsers(users)
+    await writeUsers(users)
 
     return NextResponse.json({ 
       success: true, 
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    const submissions = readSubmissions()
+    const submissions = await readSubmissions()
     
     // Sort by score (desc) then by time (asc)
     const sortedSubmissions = submissions.sort((a, b) => {
