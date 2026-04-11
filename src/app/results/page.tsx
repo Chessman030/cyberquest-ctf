@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
-export default function ResultsPage() {
+// 1. The Child Component (Where the hook lives)
+function ResultsContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [score, setScore] = useState(0)
@@ -19,6 +21,24 @@ export default function ResultsPage() {
     if (timeParam) setTotalTime(parseInt(timeParam))
     if (switchesParam) setTabSwitches(parseInt(switchesParam))
   }, [searchParams])
+
+  // Don't forget your actual HTML UI return down here!
+  return (
+    <div>
+      {/* Your actual results page UI elements go here */}
+      <h1>Your Score: {score}</h1>
+    </div>
+  )
+} // <--- YOU WERE MISSING THIS CLOSING BRACKET
+
+// 2. The Parent Component (The Suspense Wrapper)
+export default function ResultsPage() {
+  return (
+    <Suspense fallback={<div>Loading results...</div>}>
+      <ResultsContent />
+    </Suspense>
+  )
+}
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
