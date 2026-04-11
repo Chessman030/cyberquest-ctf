@@ -30,17 +30,20 @@ function ResultsContent() {
   }
 
   const getScoreColor = (score: number) => {
-    if (score === 3) return 'text-green-600'
-    if (score === 2) return 'text-yellow-600'
-    if (score === 1) return 'text-orange-600'
+    if (score >= 18) return 'text-green-600'
+    if (score >= 14) return 'text-blue-600'
+    if (score >= 10) return 'text-yellow-600'
+    if (score >= 6) return 'text-orange-600'
     return 'text-red-600'
   }
 
   const getPerformanceMessage = (score: number, switches: number) => {
-    if (score === 3 && switches === 0) return '🏆 Perfect! Excellent work!'
-    if (score === 3) return '🥇 Great job! All questions correct!'
-    if (score === 2) return '🥈 Good work! Almost there!'
-    if (score === 1) return '🥉 Nice try! Keep practicing!'
+    if (score === 20 && switches === 0) return '🏆 Perfect Score! Absolute Legend!'
+    if (score === 20) return '🥇 Perfect Score! Outstanding!'
+    if (score >= 18) return '🥇 Excellent! Outstanding performance!'
+    if (score >= 14) return '🥈 Great job! Well done!'
+    if (score >= 10) return '🥉 Good work! Keep practicing!'
+    if (score >= 6) return '📚 Nice effort! Try again!'
     return '📚 Keep learning and try again!'
   }
 
@@ -61,7 +64,7 @@ function ResultsContent() {
           <div className="bg-gray-50 rounded-lg p-6 text-center">
             <h2 className="text-lg font-semibold text-gray-700 mb-4">Your Score</h2>
             <div className={`text-6xl font-bold ${getScoreColor(score)} mb-2`}>
-              {score}/3
+              {score}/20
             </div>
             <p className="text-gray-600">
               Questions Answered Correctly
@@ -104,10 +107,10 @@ function ResultsContent() {
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
             <h3 className="font-semibold text-yellow-800 mb-2">📊 Performance Summary</h3>
             <ul className="text-sm text-yellow-700 space-y-1">
-              <li>• Questions answered: {score} out of 3</li>
+              <li>• Questions answered: {score} out of 20</li>
               <li>• Completion time: {formatTime(totalTime)}</li>
               <li>• Clean attempt: {tabSwitches === 0 ? 'Yes ✅' : `No - ${tabSwitches} tab switches ❌`}</li>
-              <li>• Final score: {score === 3 ? 'Perfect' : score === 2 ? 'Good' : score === 1 ? 'Okay' : 'Needs improvement'}</li>
+              <li>• Final score: {score === 20 ? 'Perfect' : score >= 18 ? 'Excellent' : score >= 14 ? 'Great' : score >= 10 ? 'Good' : score >= 6 ? 'Fair' : 'Needs improvement'}</li>
             </ul>
           </div>
         </div>
