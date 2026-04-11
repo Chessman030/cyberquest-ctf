@@ -22,24 +22,6 @@ function ResultsContent() {
     if (switchesParam) setTabSwitches(parseInt(switchesParam))
   }, [searchParams])
 
-  // Don't forget your actual HTML UI return down here!
-  return (
-    <div>
-      {/* Your actual results page UI elements go here */}
-      <h1>Your Score: {score}</h1>
-    </div>
-  )
-} // <--- YOU WERE MISSING THIS CLOSING BRACKET
-
-// 2. The Parent Component (The Suspense Wrapper)
-export default function ResultsPage() {
-  return (
-    <Suspense fallback={<div>Loading results...</div>}>
-      <ResultsContent />
-    </Suspense>
-  )
-}
-
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
@@ -146,5 +128,14 @@ export default function ResultsPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+// 2. The Parent Component (The Suspense Wrapper)
+export default function ResultsPage() {
+  return (
+    <Suspense fallback={<div>Loading results...</div>}>
+      <ResultsContent />
+    </Suspense>
   )
 }
