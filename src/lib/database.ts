@@ -1,25 +1,31 @@
-import fs from 'fs'
-import path from 'path'
 import bcrypt from 'bcryptjs'
+import { MongoClient } from 'mongodb'
 
-const dataDir = path.join(process.cwd(), 'data')
-const usersFile = path.join(dataDir, 'users.json')
-const submissionsFile = path.join(dataDir, 'submissions.json')
+// --- MONGODB CONNECTION SETUP ---
+const uri = process.env.MONGODB_URI
 
-// Ensure data directory exists
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true })
+if (!uri) {
+  throw new Error('Please add your MONGODB_URI to .env.local or Vercel Environment Variables')
 }
 
-// Initialize files if they don't exist
-if (!fs.existsSync(usersFile)) {
-  fs.writeFileSync(usersFile, JSON.stringify([], null, 2))
+let client: MongoClient
+let clientPromise: Promise<MongoClient>
+
+if (process.env.NODE_ENV === 'development') {
+  let globalWithMongo = global as typeof globalThis & {
+    _mongoClientPromise?: Promise<MongoClient>
+  }
+  if (!globalWithMongo._mongoClientPromise) {
+    client = new MongoClient(uri)
+    globalWithMongo._mongoClientPromise = client.connect()
+  }
+  clientPromise = globalWithMongo._mongoClientPromise
+} else {
+  client = new MongoClient(uri)
+  clientPromise = client.connect()
 }
 
-if (!fs.existsSync(submissionsFile)) {
-  fs.writeFileSync(submissionsFile, JSON.stringify([], null, 2))
-}
-
+// --- INTERFACES & CONSTANTS ---
 export interface User {
   id: string
   name: string
@@ -37,7 +43,7 @@ export interface Submission {
   userEmail: string
   answers: { [questionId: number]: string }
   score: number
-  totalTime: number // in seconds
+  totalTime: number
   cheatScore: number
   tabSwitches: number
   submittedAt: string
@@ -56,39 +62,47 @@ export const questions: Question[] = [
   { id: 3, text: "What is your name?", answer: "raghav" }
 ]
 
-// Admin credentials
 export const ADMIN_CREDENTIALS = {
   email: 'rssstar07@gmail.com',
   name: 'raghav',
   password: 'ravi071011'
 }
 
-export function readUsers(): User[] {
-  try {
-    const data = fs.readFileSync(usersFile, 'utf8')
-    return JSON.parse(data)
-  } catch {
-    return []
+// --- DATABASE FUNCTIONS ---
+
+export async function readUsers(): Promise<User[]> {
+  const client = await clientPromise
+  const db = client.db('ctf_database')
+  const users = await db.collection('users').find({}).toArray()
+  return users as unknown as User[]
+}
+
+export async function writeUsers(users: User[]): Promise<void> {
+  const client = await clientPromise
+  const db = client.db('ctf_database')
+  if (users.length > 0) {
+    await db.collection('users').deleteMany({})
+    await db.collection('users').insertMany(users)
   }
 }
 
-export function writeUsers(users: User[]): void {
-  fs.writeFileSync(usersFile, JSON.stringify(users, null, 2))
+export async function readSubmissions(): Promise<Submission[]> {
+  const client = await clientPromise
+  const db = client.db('ctf_database')
+  const submissions = await db.collection('submissions').find({}).toArray()
+  return submissions as unknown as Submission[]
 }
 
-export function readSubmissions(): Submission[] {
-  try {
-    const data = fs.readFileSync(submissionsFile, 'utf8')
-    return JSON.parse(data)
-  } catch {
-    return []
+export async function writeSubmissions(submissions: Submission[]): Promise<void> {
+  const client = await clientPromise
+  const db = client.db('ctf_database')
+  if (submissions.length > 0) {
+    await db.collection('submissions').deleteMany({})
+    await db.collection('submissions').insertMany(submissions)
   }
 }
 
-export function writeSubmissions(submissions: Submission[]): void {
-  fs.writeFileSync(submissionsFile, JSON.stringify(submissions, null, 2))
-}
-
+// --- UTILS ---
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 10)
 }
