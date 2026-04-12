@@ -13,13 +13,14 @@ export default function CompetitionPage() {
   const [answers, setAnswers] = useState<{ [key: number]: string }>({})
   const [timeLeft, setTimeLeft] = useState(2 * 60 * 60) // 2 hours in seconds
   const [tabSwitches, setTabSwitches] = useState(0)
-  const [startTime] = useState(new Date())
+  const [startTime, setStartTime] = useState(new Date())
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [userId, setUserId] = useState('')
   const [userName, setUserName] = useState('')
   const [showHints, setShowHints] = useState(false)
   const [showFlagModal, setShowFlagModal] = useState(false)
   const [flagMessage, setFlagMessage] = useState('')
+  const [isLoaded, setIsLoaded] = useState(false)
 
   // Hints for text questions (questions 1-10)
   const hintsData: { [key: number]: { hint1: string; hint2: string } } = {
@@ -81,6 +82,71 @@ export default function CompetitionPage() {
     setUserId(storedUserId)
     setUserName('Student') // You might want to fetch this from API
 
+    // Load competition state from localStorage if available
+    const savedTimeLeft = localStorage.getItem('competitionTimeLeft')
+    const savedAnswers = localStorage.getItem('competitionAnswers')
+    const savedTabSwitches = localStorage.getItem('competitionTabSwitches')
+    const savedCurrentQuestion = localStorage.getItem('competitionCurrentQuestion')
+    const savedStartTime = localStorage.getItem('competitionStartTime')
+
+    if (savedTimeLeft !== null) {
+      setTimeLeft(parseInt(savedTimeLeft))
+    }
+    if (savedAnswers !== null) {
+      setAnswers(JSON.parse(savedAnswers))
+    }
+    if (savedTabSwitches !== null) {
+      setTabSwitches(parseInt(savedTabSwitches))
+    }
+    if (savedCurrentQuestion !== null) {
+      setCurrentQuestion(parseInt(savedCurrentQuestion))
+    }
+    if (savedStartTime !== null) {
+      setStartTime(new Date(savedStartTime))
+    }
+
+    setIsLoaded(true)
+  }, [router])
+
+  // Save timeLeft to localStorage whenever it changes
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('competitionTimeLeft', timeLeft.toString())
+    }
+  }, [timeLeft, isLoaded])
+
+  // Save answers to localStorage whenever they change
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('competitionAnswers', JSON.stringify(answers))
+    }
+  }, [answers, isLoaded])
+
+  // Save tabSwitches to localStorage whenever it changes
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('competitionTabSwitches', tabSwitches.toString())
+    }
+  }, [tabSwitches, isLoaded])
+
+  // Save currentQuestion to localStorage whenever it changes
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('competitionCurrentQuestion', currentQuestion.toString())
+    }
+  }, [currentQuestion, isLoaded])
+
+  // Save startTime to localStorage whenever it changes
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('competitionStartTime', startTime.toISOString())
+    }
+  }, [startTime, isLoaded])
+
+  // Timer and cheat detection - runs after page loads
+  useEffect(() => {
+    if (!isLoaded) return
+
     // Start timer
     timerRef.current = setInterval(() => {
       setTimeLeft(prev => {
@@ -109,7 +175,7 @@ export default function CompetitionPage() {
       if (timerRef.current) clearInterval(timerRef.current)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
-  }, [router])
+  }, [isLoaded])
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
@@ -189,6 +255,12 @@ export default function CompetitionPage() {
 
       if (response.ok) {
         const result = await response.json()
+        // Clear localStorage after successful submission
+        localStorage.removeItem('competitionTimeLeft')
+        localStorage.removeItem('competitionAnswers')
+        localStorage.removeItem('competitionTabSwitches')
+        localStorage.removeItem('competitionCurrentQuestion')
+        localStorage.removeItem('competitionStartTime')
         router.push(`/results?score=${result.score}&time=${totalTime}&switches=${tabSwitches}`)
       } else {
         alert('Error submitting exam. Please try again.')
@@ -207,6 +279,17 @@ export default function CompetitionPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white p-8 rounded-lg shadow-lg text-center">
           <h2 className="text-2xl font-bold mb-4">Submitting your exam...</h2>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+          <h2 className="text-2xl font-bold mb-4">Loading your session...</h2>
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
         </div>
       </div>
