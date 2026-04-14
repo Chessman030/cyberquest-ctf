@@ -25,44 +25,44 @@ export default function CompetitionPage() {
   // Hints for text questions (questions 1-10)
   const hintsData: { [key: number]: { hint1: string; hint2: string } } = {
     1: {
-      hint1: "Not everything the server sends to your browser is actually visible on the screen.",
-      hint2: "Check the HTML structure in DevTools. How do developers use CSS to hide elements from the page layout?"
+      hint1: "inspect the website",
+      hint2: "check for the line where display is none"
     },
     2: {
-      hint1: "Developers often leave behind notes, reminders, or old code snippets for themselves.",
-      hint2: "Inspect the raw HTML source code. What syntax is used to write text that the browser explicitly ignores when rendering the page?"
+      hint1: "inspect the website",
+      hint2: "the developer were going to remove the password, so check for \"todo\" part which was there to remind them"
     },
     3: {
-      hint1: "The webpage is asking you not to click that button, but client-side rules are more like suggestions than actual security.",
-      hint2: "Inspect the locked element in DevTools. What specific HTML attribute tells the browser to make an input unclickable, and what happens if you simply delete it?"
+      hint1: "Look for a hidden div in the Inspect Elements tab.",
+      hint2: "Change cursor-not-allowed to cursor-pointer and display none to block and check the flag in console"
     },
     4: {
-      hint1: "Your browser holds a digital ID badge to remember who you are. It looks like gibberish, but it's an easily translatable format.",
-      hint2: "Look into the DevTools tabs responsible for session data. Once you find a strange string of characters, what common encoding method is frequently used to safely transmit data over the web?atob right?"
+      hint1: "inspect the website for cookies",
+      hint2: "atob is used to decode base64 encoded message"
     },
     5: {
-      hint1: "Not all secrets are kept on the backend. Sometimes web apps stash keys temporarily right in your browser's memory.",
-      hint2: "Open DevTools and explore the tabs related to browser memory and client-side persistence. Where else besides cookies can a web app store key-value pairs?"
+      hint1: "inspect the website",
+      hint2: "check for storage"
     },
     6: {
-      hint1: "The server whispers extra metadata to your browser in the background before the webpage even finishes loading.",
+      hint1: "inspect the website and check for requests",
       hint2: "check for X-Secret_Flag in the after opening the very first request"
     },
     7: {
-      hint1: "Why just read the page's code when you can actively interact with it? You have the power to run commands yourself.",
-      hint2: "If you found the name of a suspicious function in the source code, which DevTools tab acts as a live terminal where you can call that function into action?revealflag right?"
+      hint1: "inspect the website",
+      hint2: "use revealFlag"
     },
     8: {
-      hint1: "Files can easily fake their extensions. A file named .png might not actually be an image at all.",
-      hint2: "Monitor the page traffic as it loads. How does the server officially tell the browser what type of file it is sending, regardless of the file's actual name?"
+      hint1: "inspect the website",
+      hint2: "chceck for the hidden image"
     },
     9: {
-      hint1: "HTML isn't the only language capable of inserting text onto a screen. The styling rules themselves might be injecting the secret.",
-      hint2: "Inspect the Styles pane for the suspicious element. What CSS selectors allow developers to insert virtual elements and text right before or after an actual HTML tag?"
+      hint1: "inspect website and check for secret box class",
+      hint2: "check for css layout"
     },
     10: {
-      hint1: "Production code is usually scrambled and minified, but developers sometimes accidentally leave the translation guide behind.",
-      hint2: "Explore the directory structure in DevTools where the browser loads its scripts. Are there any debugging files exposed that reconstruct the original, readable code?"
+      hint1: "inspect website and search for superSecretFlag",
+      hint2: "check for competitions.tsx file"
     },
   }
 
