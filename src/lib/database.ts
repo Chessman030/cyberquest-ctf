@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { MongoClient } from 'mongodb'
+import { questions } from '@/data/questions'
 
 // --- MONGODB CONNECTION SETUP ---
 const uri = process.env.MONGODB_URI
@@ -49,18 +50,6 @@ export interface Submission {
   submittedAt: string
   startedAt: string
 }
-
-export interface Question {
-  id: number
-  text: string
-  answer: string
-}
-
-export const questions: Question[] = [
-  { id: 1, text: "What is your name?", answer: "raghav" },
-  { id: 2, text: "What is your name?", answer: "raghav" },
-  { id: 3, text: "What is your name?", answer: "raghav" }
-]
 
 export const ADMIN_CREDENTIALS = {
   email: 'rssstar07@gmail.com',
